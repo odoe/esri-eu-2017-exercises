@@ -1,17 +1,27 @@
-import EsriMap from "esri/Map";
+import WebMap from "esri/WebMap";
 import MapView from "esri/views/MapView";
+import LayerList from "esri/widgets/LayerList";
+import Legend from "esri/widgets/Legend";
+import Search from "esri/widgets/Search";
 
 // Create a basic map
-const map = new EsriMap({
-  basemap: "osm"
+const map = new WebMap({
+  portalItem: {
+    id: "0b6539c487c046e191724db0afa88939"
+  }
 });
 
 // Create a MapView that displays map data
 const view = new MapView({
   container: "viewDiv",
-  center: [13.4, 52.52],
-  zoom: 11,
   map
 });
 
-view.then(() => console.log("view ready"));
+// Wait for view to load and add widgets
+view.then(() => {
+  const layerList = new LayerList({ view });
+  const legend = new Legend({ view });
+  const search = new Search({ view });
+  view.ui.add([search, layerList], "top-right");
+  view.ui.add(legend, "bottom-left");
+});
